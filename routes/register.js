@@ -1,31 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-
 const router = express.Router();
 
 // Rota de registro
 router.post('/', async (req, res) => {
+  const { email, password, nickname, skins } = req.body; // Inclui o campo skins
 
- // console.log('Rota /api/register chamada com:', req.body); // Adicione este log aqui
-  
-  const { email, password, nickname } = req.body;
-
-
-  // Validações
   if (!email || !password || !nickname) {
     return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
-  }
-
-  // Validação de formato de email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ message: 'Formato de email inválido.' });
-  }
-
-  // Validação de senha
-  if (password.length < 6) {
-    return res.status(400).json({ message: 'A senha deve ter pelo menos 6 caracteres.' });
   }
 
   try {
@@ -38,11 +21,12 @@ router.post('/', async (req, res) => {
     // Criptografa a senha
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Cria o usuário
+    // Cria o usuário com as skins (se fornecidas)
     const newUser = new User({
       email,
       password: hashedPassword,
       nickname,
+      skins: skins || [] // Adiciona as skins, ou um array vazio por padrão
     });
 
     await newUser.save();

@@ -22,18 +22,14 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));  // Aplica as configurações de CORS
-
 app.use(express.json());
 
 // Rotas
 const registerRoute = require('./routes/register');
 app.use('/api/register', registerRoute);
 
-const loginRoute = require('./routes/login');  // Importa a rota de login
+const loginRoute = require('./routes/login');
 app.use('/api/login', loginRoute);  // Rota de login
-
-const characterRoute = require('./routes/character');  // Importa a rota de personagens
-app.use('/api/characters', characterRoute);  // Rota de personagens
 
 const nicknameRoute = require('./routes/nickname');
 app.use('/api/nickname', nicknameRoute);

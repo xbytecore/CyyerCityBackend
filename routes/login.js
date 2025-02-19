@@ -25,24 +25,18 @@ router.post('/', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email }, // Removido o nickname
+      { userId: user._id, email: user.email },
       'secrectkey', 
       { expiresIn: '1h' }
     );
 
-    console.log('Token gerado:', token);
-
-    console.log('Nickname enviado na resposta:', user.nickname);
     return res.status(200).json({
-      message: 'Login bem-sucedido', 
+      message: 'Login bem-sucedido',
       token: token,
       userId: user._id,
-      nickname: user.nickname // Deve estar aqui
+      nickname: user.nickname,
+      skins: user.skins || [] // Retorna as skins junto com o login
     });
-    
-    
-    
-    
   } catch (err) {
     console.error('Erro ao fazer login:', err);
     return res.status(500).json({ message: 'Erro interno do servidor. Tente novamente mais tarde.' });
